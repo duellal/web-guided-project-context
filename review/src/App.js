@@ -1,31 +1,40 @@
-import React, { useState } from 'react';
+import React, { useState, useContext, createContext } from 'react';
 import data from './data'
+
+const PersonContext = createContext()
 
 const App = () => {
     const [person, setPerson] = useState(data)
 
-    return (<div className="App component">
-        <h1>Main App</h1>
-        <SubComp1 person={person} setPerson={setPerson} />
-    </div>);
+    return (
+        <PersonContext.Provider value={[person, setPerson]}>
+            <div className="App component">
+                <h1>Main App</h1>
+                <SubComp1 />
+            </div>
+        </PersonContext.Provider>
+    );
 };
 
-const SubComp1 = (props) => {
-    const { title, first, last } = props.person.name
+const SubComp1 = () => {
+    const [person] = useContext(PersonContext)
+    const { title, first, last } = person.name
     return (
         <div className='component'>
             <h1>Sub Comp 1</h1>
             <p>{title} {first} {last}</p>
 
-            <SubComp2 person={props.person} setPerson={props.setPerson} />
+            <SubComp2 />
         </div>
     )
 }
 
-const SubComp2 = (props) => {
+const SubComp2 = () => {
+    const [person, setPerson] = useContext(PersonContext)
+
     const handleName = () => {
-        props.setPerson({
-            ...props.person,
+        setPerson({
+            ...person,
             name: {
                 title: "Ms.",
                 first: 'Alex',
@@ -39,17 +48,18 @@ const SubComp2 = (props) => {
             <h1>Sub Comp 2</h1>
             <button onClick={handleName}>Change Name</button>
 
-            <SubComp3 person={props.person} setPerson={props.setPerson} />
+            <SubComp3 />
         </div>
     )
 }
 
-const SubComp3 = (props) => {
-    const { street, city, state, postcode } = props.person.location
+const SubComp3 = () => {
+    const [person, setPerson] = useContext(PersonContext)
+    const { street, city, state, postcode } = person.location
 
     const handleLocation = () => {
-        props.setPerson({
-            ...props.person,
+        setPerson({
+            ...person,
             location: {
                 street: '1234 Cottonwood Lane',
                 city: 'Raleigh',

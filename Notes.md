@@ -41,3 +41,5 @@ This is the industry standard.
 #### Recommendation:
 If you're building from scratch/for young startups.
 
+#### Notes:
+- value can be an array, an object,a string, it can be anything you need it to be
