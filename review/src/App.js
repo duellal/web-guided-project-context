@@ -1,13 +1,15 @@
-import React, { useState, useContext, createContext } from 'react';
+import React, { useReducer, useContext, createContext } from 'react';
 import data from './data'
+
+import { reducer, setName, setLocation } from './reducer';
 
 const PersonContext = createContext()
 
 const App = () => {
-    const [person, setPerson] = useState(data)
+    const [person, dispatch] = useReducer(reducer, data)
 
     return (
-        <PersonContext.Provider value={[person, setPerson]}>
+        <PersonContext.Provider value={[person, dispatch]}>
             <div className="App component">
                 <h1>Main App</h1>
                 <SubComp1 />
@@ -19,6 +21,7 @@ const App = () => {
 const SubComp1 = () => {
     const [person] = useContext(PersonContext)
     const { title, first, last } = person.name
+
     return (
         <div className='component'>
             <h1>Sub Comp 1</h1>
@@ -30,17 +33,14 @@ const SubComp1 = () => {
 }
 
 const SubComp2 = () => {
-    const [person, setPerson] = useContext(PersonContext)
+    const [person, dispatch] = useContext(PersonContext)
 
     const handleName = () => {
-        setPerson({
-            ...person,
-            name: {
-                title: "Ms.",
-                first: 'Alex',
-                last: 'Stormwind'
-            }
-        })
+        dispatch(setName({
+            title: "Ms.",
+            first: 'Alex',
+            last: 'Stormwind'
+        }))
     }
 
     return (
@@ -54,19 +54,16 @@ const SubComp2 = () => {
 }
 
 const SubComp3 = () => {
-    const [person, setPerson] = useContext(PersonContext)
+    const [person, dispatch] = useContext(PersonContext)
     const { street, city, state, postcode } = person.location
 
     const handleLocation = () => {
-        setPerson({
-            ...person,
-            location: {
-                street: '1234 Cottonwood Lane',
-                city: 'Raleigh',
-                state: 'North Carolina',
-                postcode: '64892'
-            }
-        })
+        dispatch(setLocation({
+            street: '1234 Cottonwood Lane',
+            city: 'Raleigh',
+            state: 'North Carolina',
+            postcode: '64892'
+        }))
     }
 
     return (
