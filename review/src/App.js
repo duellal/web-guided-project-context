@@ -5,27 +5,34 @@ import { reducer, setName, setLocation } from './reducer';
 
 const PersonContext = createContext()
 
+const DogContext = createContext()
+
 const App = () => {
     const [person, dispatch] = useReducer(reducer, data)
 
     return (
         <PersonContext.Provider value={[person, dispatch]}>
-            <div className="App component">
-                <h1>Main App</h1>
-                <SubComp1 />
-            </div>
+            <DogContext.Provider value={{ dogName: 'Zeus', dogAge: 4 }}>
+                <div className="App component">
+                    <h1>Main App</h1>
+                    <SubComp1 />
+                </div>
+            </DogContext.Provider>
         </PersonContext.Provider>
     );
 };
 
 const SubComp1 = () => {
     const [person] = useContext(PersonContext)
+    const dog = useContext(DogContext)
+
     const { title, first, last } = person.name
 
     return (
         <div className='component'>
             <h1>Sub Comp 1</h1>
             <p>{title} {first} {last}</p>
+            <p>My dog {dog.dogName} is {dog.dogAge} years old.</p>
 
             <SubComp2 />
         </div>
