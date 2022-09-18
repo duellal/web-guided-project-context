@@ -5,6 +5,7 @@ const Siblings = () => {
   // const family = useContext(FamilyContext)
 
   return (
+    //Consumer is an older way to do Context API:
     <FamilyContext.Consumer>
       {
         (family) => {
